@@ -26,38 +26,58 @@ using namespace std;
 typedef unsigned int Pixel;
 
 //=============================================================================
+// Strukturen
+//=============================================================================
+
+struct pgm_bild{
+   char  magic[2];            // Bildtyp
+   int   nx;                  // Zeilenzahl
+   int   ny;                  // Spaltenzahl
+   int   grauwert;            // max. Grauwert
+   Pixel	**bild;              // Bildmatrix
+};
+
+//=============================================================================
 // Funktionen
 //=============================================================================
 
-void bild_lesen(){
+void bild_lesen( pgm_bild *bild, string ifs_file_name ){
 
 }
 
-void bild_schreiben(){
+void bild_schreiben( pgm_bild *bild, string ofs_file_name ){
 
 }
 
-void delete_pixel_matrix(){
+void delete_pixel_matrix( Pixel **m ){
+   delete[] *m;
+   delete[]  m;
+}
+
+Pixel** new_pixel_matrix( size_t rows, size_t columns ){
+   size_t   i;
+   Pixel    **m;
+   m  =  new Pixel*  [rows];
+   *m =  new Pixel   [rows*columns];
+   for ( i=1; i<rows; i+=1 ){
+      m[i] = m[i-1] + columns;
+   }
+   return m;
+}
+
+void glaetten( pgm_bild *bild1, pgm_bild *bild2 ){
 
 }
 
-Pixel** new_pixel_matrix(){
+void invertieren( pgm_bild *bild1, pgm_bild *bild2 ){
 
 }
 
-void glaetten(){
+void kantenbildung( pgm_bild *bild1, pgm_bild *bild2 ){
 
 }
 
-void invertieren(){
-
-}
-
-void kantenbildung(){
-
-}
-
-void kopiere_bildkopf(){
+void kopiere_bildkopf( pgm_bild *bild1, pgm_bild *bild2 ){
 
 }
 
