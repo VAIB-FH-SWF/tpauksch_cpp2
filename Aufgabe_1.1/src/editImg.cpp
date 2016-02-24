@@ -66,15 +66,57 @@ Pixel** new_pixel_matrix( size_t rows, size_t columns ){
 }
 
 void glaetten( pgm_bild *bild1, pgm_bild *bild2 ){
+   for (int i = 0; i < bild1->ny; i++) {
+      for (int j = 0; j < bild1->nx; j++) {
+         int summ = 0;
+         if ((i - 1 >= 0) || (j - 1 >= 0)) {
+            summ += bild1[i - 1][j - 1];
+            summ += bild1[i - 1][j];
+            summ += bild1[i - 1][j + 1];
 
+            summ += bild1[i][j - 1];
+            summ += bild1[i][j];
+            summ += bild1[i][j + 1];
+
+            summ += bild1[i + 1][j - 1];
+            summ += bild1[i + 1][j];
+            summ += bild1[i + 1][j + 1];
+
+            bild2[i][j] = summ / 9;
+         }
+      }
+   }
 }
 
 void invertieren( pgm_bild *bild1, pgm_bild *bild2 ){
-
+   for (int i = 0; i < bild1->ny; i++) {
+      for (int j = 0; j < bild1->nx; j++) {
+         bild2[i][j] = bild1->grauwert - bild1[i][j];
+      }
+   }
 }
 
 void kantenbildung( pgm_bild *bild1, pgm_bild *bild2 ){
+   for (int i = 0; i < bild1->ny; i++) {
+      for (int j = 0; j < bild1->nx; j++) {
+         int summ = 0;
+         if ((i - 1 >= 0) || (j - 1 >= 0)) {
+            summ += bild1[i - 1][j - 1] * 0;
+            summ += bild1[i - 1][j] * -1;
+            summ += bild1[i - 1][j + 1] * 0;
 
+            summ += bild1[i][j - 1] * -1;
+            summ += bild1[i][j] * 4;
+            summ += bild1[i][j + 1] * -1;
+
+            summ += bild1[i + 1][j - 1] * 0;
+            summ += bild1[i + 1][j] * -1;
+            summ += bild1[i + 1][j + 1] * 0;
+
+            bild2[i][j] = abs(summ / 9);
+         }
+      }
+   }
 }
 
 void kopiere_bildkopf( pgm_bild *bild1, pgm_bild *bild2 ){
