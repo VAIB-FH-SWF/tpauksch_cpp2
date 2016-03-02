@@ -17,7 +17,8 @@
 //=============================================================================
 #include <iostream>
 #include <fstream>
-#include <cstdlib>   // Für error(1)
+#include <cstdlib>  // Für error(1)
+#include <iomanip>  // Für setw(3)
 
 using namespace std;
 
@@ -37,7 +38,7 @@ struct pgm_bild{
    int   nx;                  // Spaltenzahl
    int   ny;                  // Zeilenzahl
    int   grauwert;            // max. Grauwert
-   Pixel	*bild[N];              // Bildmatrix
+   Pixel **bild;              // Bildmatrix
 };
 
 //=============================================================================
@@ -52,9 +53,27 @@ void print_meta(pgm_bild *bild){
    cout << bild->ny << endl;
 }
 
+Pixel** new_pixel_matrix( size_t rows, size_t columns ){
+   size_t   i;
+   Pixel    **m;
+   m  =  new Pixel*  [rows];
+   *m =  new Pixel   [rows*columns];
+   for ( i=1; i<rows; i+=1 ){
+      m[i] = m[i-1] + columns;
+   }
+   return m;
+}
+
+void delete_pixel_matrix( Pixel **m ){
+   delete[] *m;
+   delete[]  m;
+}
+
 void bild_lesen( pgm_bild *bild, string ifs_file_name ){
 
    ifstream ifs;
+   int ifsInput = 0;
+
    ifs.open(ifs_file_name.c_str());
 
    if (!ifs.is_open()) {
@@ -70,44 +89,66 @@ void bild_lesen( pgm_bild *bild, string ifs_file_name ){
       ifs >> bild->nx;
       ifs >> bild->ny;
       ifs >> bild->grauwert;
+
+      bild->bild = new_pixel_matrix(bild->ny,bild->nx);
+
+      //Bilddaten einlesen
+      for (int indexY = 0; indexY < bild->ny; indexY++){
+         for (int indexX = 0; indexX < bild->nx; indexX++){
+            ifs >> ifsInput;
+            bild->bild[indexY][indexX] = ifsInput;
+         }
+      }
    }catch(int e){
       cout << "\ERROR : Errorcode " << e << endl;
    }
-
-   //Bilddaten einlesen
-   //for (int indexY = 0; indexY < bild->ny; indexY++){
-      //for (int indexX = 0; indexX < bild->nx; indexX++){
-         //ifs >> bild->bild[0][1];
-
-      //}
-   //}
 }
 
 void bild_schreiben( pgm_bild *bild, string ofs_file_name ){
+   ofstream ofs;
+   ofs.open(ofs_file_name.c_str());
 
-}
-
-void delete_pixel_matrix( Pixel **m ){
-   delete[] *m;
-   delete[]  m;
-}
-
-Pixel** new_pixel_matrix( size_t rows, size_t columns ){
-   size_t   i;
-   Pixel    **m;
-   m  =  new Pixel*  [rows];
-   *m =  new Pixel   [rows*columns];
-   for ( i=1; i<rows; i+=1 ){
-      m[i] = m[i-1] + columns;
+   if (!ofs.is_open()) {
+      cerr << "\nERROR : Failed to open input file." << ofs_file_name << "." << endl;
+      exit(1);
    }
-   return m;
+
+   try{
+      ofs << bild->magic[0] << bild->magic[1] << endl;
+      ofs << bild->nx << endl;
+      ofs << bild->ny << endl;
+      ofs << bild->grauwert << endl;
+
+      //Bilddaten schreiben
+      for (int indexY = 0; indexY < bild->ny; indexY++){
+         for (int indexX = 0; indexX < bild->nx; indexX++){
+            ofs << setw(4) << (int)bild->bild[indexY][indexX];
+         }
+         ofs << endl;
+      }
+      delete_pixel_matrix(bild->bild);
+   }catch(int e){
+      cout << "\ERROR : Errorcode " << e << endl;
+   }
+}
+
+void kopiere_bildkopf( pgm_bild *bild1, pgm_bild *bild2 ){
+   bild2->nx = bild1->nx;
+   bild2->ny = bild1->ny;
+   bild2->grauwert = bild1->grauwert;
+   bild2->magic[0] = bild1->magic[0];
+   bild2->magic[1] = bild1->magic[1];
 }
 
 void glaetten( pgm_bild *bild1, pgm_bild *bild2 ){
    for (int i = 0; i < bild1->ny; i++) {
       for (int j = 0; j < bild1->nx; j++) {
          int summ = 0;
-         if ((i - 1 >= 0) || (j - 1 >= 0)) {
+         if ((i - 1 >= 0) && (j - 1 >= 0)) {
+            summ += bild1->bild[i - 1][j - 1];
+            summ += bild1->bild[i - 1][j];
+            summ += bild1->bild[i - 1][j + 1];
+
             summ += bild1->bild[i - 1][j - 1];
             summ += bild1->bild[i - 1][j];
             summ += bild1->bild[i - 1][j + 1];
@@ -156,18 +197,6 @@ void kantenbildung( pgm_bild *bild1, pgm_bild *bild2 ){
       }
    }
 }
-
-void kopiere_bildkopf( pgm_bild *bild1, pgm_bild *bild2 ){
-
-}
-
-void initFeld(Pixel *bildFeld[N]){
-   for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-         bildFeld[N][N] = 0;
-      }
-   }
-}
 //=============================================================================
 // Hauptprogramm
 //=============================================================================
@@ -175,14 +204,18 @@ void initFeld(Pixel *bildFeld[N]){
 int main() {
 
    cout << "Aufgabe 1.1 - Verwendung von Strukturen." << endl;
-   Pixel bildFeld[N][N];
-   initFeld(&bildFeld[0][0]);
 
+   // Definition der Struktur, die die Metadaten und den Zeiger auf das Pixel Arraiy hält
    pgm_bild bildStruktur;
-   bildStruktur.bild[N] = &bildFeld[0][0];
+   pgm_bild bildStruktur2;
 
-   //cout << bildStruktur.bild[0][0];
-   //bild_lesen(&bildStruktur,"dreifach.pgm");
-   //print_meta(&bildStruktur);
+   bild_lesen(&bildStruktur, "dreifach.pgm");
+
+   bildStruktur2.bild = new_pixel_matrix(bildStruktur2.ny, bildStruktur2.nx);
+   kopiere_bildkopf(&bildStruktur, &bildStruktur2);
+
+//   glaetten(&bildStruktur, &bildStruktur2);
+   bild_schreiben(&bildStruktur, "dreifachOut.pgm");
+
    return 0;
 }
