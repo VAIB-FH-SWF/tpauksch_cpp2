@@ -26,7 +26,6 @@ using namespace std;
 // Definitionen
 //=============================================================================
 
-const int N = 10;
 typedef unsigned char Pixel;
 
 //=============================================================================
@@ -35,8 +34,8 @@ typedef unsigned char Pixel;
 
 struct pgm_bild{
    char  magic[2];            // Bildtyp
-   int   nx;                  // Spaltenzahl
-   int   ny;                  // Zeilenzahl
+   int   nx;                  // Spaltenzahl (auch Breite)
+   int   ny;                  // Zeilenzahl  (auch Höhe)
    int   grauwert;            // max. Grauwert
    Pixel **bild;              // Bildmatrix
 };
@@ -53,6 +52,7 @@ void print_meta(pgm_bild *bild){
    cout << bild->ny << endl;
 }
 
+// Rows: Zeile oder Höhe. Columns: Spalten oder Breite.
 Pixel** new_pixel_matrix( size_t rows, size_t columns ){
    size_t   i;
    Pixel    **m;
@@ -140,28 +140,36 @@ void kopiere_bildkopf( pgm_bild *bild1, pgm_bild *bild2 ){
    bild2->magic[1] = bild1->magic[1];
 }
 
+void glaettentest( pgm_bild *bild1, pgm_bild *bild2 ){
+
+   for (int i = 0; i < bild1->nx; i++) {
+      for (int j = 0; j < bild2->ny; j++) {
+         bild2->bild[j][i] = bild1->bild[j][i];
+      }
+      cout << endl;
+   }
+}
+
 void glaetten( pgm_bild *bild1, pgm_bild *bild2 ){
    for (int i = 0; i < bild1->ny; i++) {
-      for (int j = 0; j < bild1->nx; j++) {
+      for (int j = 0; j < bild1->nx; j++){
          int summ = 0;
-         if ((i - 1 >= 0) && (j - 1 >= 0)) {
-            summ += bild1->bild[i - 1][j - 1];
-            summ += bild1->bild[i - 1][j];
-            summ += bild1->bild[i - 1][j + 1];
+         if ((i - 1 >= 0) && (j - 1 >= 0)){
+            if ((i + 1 < bild1->ny) && (j + 1 < bild1->nx)){
+               summ += bild1->bild[i - 1][j - 1];
+               summ += bild1->bild[i - 1][j];
+               summ += bild1->bild[i - 1][j + 1];
 
-            summ += bild1->bild[i - 1][j - 1];
-            summ += bild1->bild[i - 1][j];
-            summ += bild1->bild[i - 1][j + 1];
+               summ += bild1->bild[i][j - 1];
+               summ += bild1->bild[i][j];
+               summ += bild1->bild[i][j + 1];
 
-            summ += bild1->bild[i][j - 1];
-            summ += bild1->bild[i][j];
-            summ += bild1->bild[i][j + 1];
+               summ += bild1->bild[i + 1][j - 1];
+               summ += bild1->bild[i + 1][j];
+               summ += bild1->bild[i + 1][j + 1];
 
-            summ += bild1->bild[i + 1][j - 1];
-            summ += bild1->bild[i + 1][j];
-            summ += bild1->bild[i + 1][j + 1];
-
-            bild2->bild[i][j] = summ / 9;
+               bild2->bild[i][j] = summ / 9;
+            }
          }
       }
    }
@@ -179,20 +187,22 @@ void kantenbildung( pgm_bild *bild1, pgm_bild *bild2 ){
    for (int i = 0; i < bild1->ny; i++) {
       for (int j = 0; j < bild1->nx; j++) {
          int summ = 0;
-         if ((i - 1 >= 0) || (j - 1 >= 0)) {
-            summ += bild1->bild[i - 1][j - 1] * 0;
-            summ += bild1->bild[i - 1][j] * -1;
-            summ += bild1->bild[i - 1][j + 1] * 0;
+         if ((i - 1 >= 0) && (j - 1 >= 0)){
+            if ((i + 1 < bild1->ny) && (j + 1 < bild1->nx)){
+               summ += bild1->bild[i - 1][j - 1] * 0;
+               summ += bild1->bild[i - 1][j] * -1;
+               summ += bild1->bild[i - 1][j + 1] * 0;
 
-            summ += bild1->bild[i][j - 1] * -1;
-            summ += bild1->bild[i][j] * 4;
-            summ += bild1->bild[i][j + 1] * -1;
+               summ += bild1->bild[i][j - 1] * -1;
+               summ += bild1->bild[i][j] * 4;
+               summ += bild1->bild[i][j + 1] * -1;
 
-            summ += bild1->bild[i + 1][j - 1] * 0;
-            summ += bild1->bild[i + 1][j] * -1;
-            summ += bild1->bild[i + 1][j + 1] * 0;
+               summ += bild1->bild[i + 1][j - 1] * 0;
+               summ += bild1->bild[i + 1][j] * -1;
+               summ += bild1->bild[i + 1][j + 1] * 0;
 
-            bild2->bild[i][j] = abs(summ / 9);
+               bild2->bild[i][j] = abs(summ / 9);
+            }
          }
       }
    }
@@ -210,12 +220,11 @@ int main() {
    pgm_bild bildStruktur2;
 
    bild_lesen(&bildStruktur, "dreifach.pgm");
-
-   bildStruktur2.bild = new_pixel_matrix(bildStruktur2.ny, bildStruktur2.nx);
    kopiere_bildkopf(&bildStruktur, &bildStruktur2);
+   bildStruktur2.bild = new_pixel_matrix(bildStruktur2.ny, bildStruktur2.nx);
 
-//   glaetten(&bildStruktur, &bildStruktur2);
-   bild_schreiben(&bildStruktur, "dreifachOut.pgm");
+   kantenbildung(&bildStruktur, &bildStruktur2);
+   bild_schreiben(&bildStruktur2, "dreifachOut.pgm");
 
    return 0;
 }
