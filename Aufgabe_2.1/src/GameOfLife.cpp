@@ -30,7 +30,7 @@ typedef unsigned int uint;
 //=============================================================================
 
 /*
- * Struktur zum halten der Dimensions-Größen und der Spielfeldmatrix
+ * Struktur zum halten der Dimensions-Größen und der Spielfeld-Matrix.
  */
 struct spielfeld {
    uint   breite;
@@ -67,7 +67,7 @@ void metainfos::init_metainfos() {
  * Funktion:            Benutzerabfrage nach der Breite und der Höhe des Spielfeldes.
  *                      Für den Spielfeldrand wird noch zweimal die Randbreite N1
  *                      addiert.
- * Eingabe Parameter:   spielfeld *spielfeld - Poiter auf Spielfeldstruktur.
+ * Eingabe Parameter:   spielfeld *spielfeld - Pointer auf Spielfeldstruktur.
  * Rückgabewert:        Keiner.
  */
 void dimensions_abfrage(spielfeld *spielfeld) {
@@ -83,9 +83,9 @@ void dimensions_abfrage(spielfeld *spielfeld) {
 
 /*
  * Funktion:            Generierung einer Pixel-Matrix und Rückgabe dessen Pointers.
- * Eingabe Parameter:   size_t rows    - size_t maximale Größe des jeweiligen Datentyps. Zeilen bzw. Höhe.
- *                      size_t columns - Spalten bzw. Breite.
- * Rückgabewert:        Pixel** m - Doppelter Pointer des Typs 'Pixel'.
+ * Eingabe Parameter:   int hoehe    - Zeilen bzw. Höhe der Matrix.
+ *                      int breite   - Spalten bzw. Breite der Matrix.
+ * Rückgabewert:        Pixel** m    - Doppelter Pointer des Typs 'Pixel'.
  */
 int** new_int_matrix( int hoehe, int breite ) {
    int   i;                            // Größe des übergebenen Datentyps.
@@ -100,7 +100,7 @@ int** new_int_matrix( int hoehe, int breite ) {
 
 /*
  * Funktion:            Belegung des Spielfeldrandes mit Nullen.
- * Eingabe Parameter:   spielfeld *spielfeld - Poiter auf Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld - Pointer auf Spielfeld-Struktur.
  * Rückgabewert:        Keiner.
  */
 void setze_rand(spielfeld *spielfeld) {
@@ -140,7 +140,7 @@ void zufallsbelegung(int **feld, uint hoehe, uint breite) {
  * Funktion:            Überläd die gleichnamige Funktion, so dass nur das Spielfeld
  *                      übergeben werden muss. Initialisiert gleichzeitig die Funktion
  *                      die den Rand setzt.
- * Eingabe Parameter:   spielfeld *spielfeld - Poiter auf Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld - Pointer auf Spielfeld-Struktur.
  * Rückgabewert:        Keiner.
  */
 void zufallsbelegung(spielfeld *spielfeld) {
@@ -149,7 +149,7 @@ void zufallsbelegung(spielfeld *spielfeld) {
 }
 
 /*
- * Funktion:            Ausgabe der Spielfeld-Matrix inclusive Tausch der Zeichen.
+ * Funktion:            Ausgabe der Spielfeld-Matrix inklusive Tausch der Zeichen.
  * Eingabe Parameter:   int **feld  - Pointer der auf die Spielfeld-Matrix zeigt.
  *                      uint hoehe  - Höhe des Spielfeldes.
  *                      uint breite - Breite des Spielfeldes.
@@ -174,7 +174,7 @@ void print_feld(int **feld, uint hoehe, uint breite) {
 /*
  * Funktion:            Überläd die gleichnamige Funktion, so dass nur das Spielfeld
  *                      übergeben werden muss.
- * Eingabe Parameter:   spielfeld *spielfeld - Poiter auf Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld - Pointer auf Spielfeld-Struktur.
  * Rückgabewert:        Keiner.
  */
 void print_feld(spielfeld *spielfeld) {
@@ -211,8 +211,8 @@ void kopiere_matrix(int** feld1, int** feld2, uint breite, uint hoehe) {
 /*
  * Funktion:            Überläd die gleichnamige Funktion, so dass nur die Spielfeld-Matrizen
  *                      übergeben werden müssen.
- * Eingabe Parameter:   spielfeld *spielfeld1 - Poiter auf Quell-Spielfeld-Struktur.
- *                      spielfeld *spielfeld2 - Poiter auf Ziel-Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld1 - Pointer auf Quell-Spielfeld-Struktur.
+ *                      spielfeld *spielfeld2 - Pointer auf Ziel-Spielfeld-Struktur.
  * Rückgabewert:        Keiner.
  */
 void kopiere_matrix(spielfeld *spielfeld1, spielfeld *spielfeld2) {
@@ -221,7 +221,7 @@ void kopiere_matrix(spielfeld *spielfeld1, spielfeld *spielfeld2) {
 
 /*
  * Funktion:            Vergleicht die Inhalte der Quell-Spielfeld-Matrix mit denen der
- *                      Ziel-Spielfeld-Matrix
+ *                      Ziel-Spielfeld-Matrix.
  * Eingabe Parameter:   int** feld1 - Pointer der auf die Quell-Spielfeld-Matrix zeigt.
  *                      int** feld2 - Pointer der auf die Ziel-Spielfeld-Matrix zeigt.
  *                      uint hoehe  - Höhe des Spielfeldes.
@@ -242,8 +242,8 @@ bool vergleiche_matrix(int** feld1, int** feld2, uint breite, uint hoehe) {
 /*
  * Funktion:            Überläd die gleichnamige Funktion, so dass nur die Spielfeld-Matrizen
  *                      übergeben werden müssen.
- * Eingabe Parameter:   spielfeld *spielfeld1 - Poiter auf Quell-Spielfeld-Struktur.
- *                      spielfeld *spielfeld2 - Poiter auf Ziel-Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld1 - Pointer auf Quell-Spielfeld-Struktur.
+ *                      spielfeld *spielfeld2 - Pointer auf Ziel-Spielfeld-Struktur.
  * Rückgabewert:        boolean - true bei Gleichheit.
  */
 bool vergleiche_matrix(spielfeld *spielfeld1, spielfeld *spielfeld2){
@@ -273,7 +273,7 @@ uint get_population(int **feld, uint breite, uint hoehe) {
 /*
  * Funktion:            Überläd die gleichnamige Funktion, so dass nur die Spielfeld-Matrizen
  *                      übergeben werden müssen.
- * Eingabe Parameter:   spielfeld *spielfeld - Poiter auf Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld - Pointer auf Spielfeld-Struktur.
  * Rückgabewert:        uint                 - Summe der Zellen.
  */
 uint get_population(spielfeld *spielfeld) {
@@ -333,8 +333,8 @@ uint next_generation(int **feld1, int **feld2, uint breite, uint hoehe) {
 /*
  * Funktion:            Überläd die gleichnamige Funktion, so dass nur die Spielfeld-Matrizen
  *                      übergeben werden müssen.
- * Eingabe Parameter:   spielfeld *spielfeld1 - Poiter auf Quell-Spielfeld-Struktur.
- *                      spielfeld *spielfeld2 - Poiter auf Ziel-Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld1 - Pointer auf Quell-Spielfeld-Struktur.
+ *                      spielfeld *spielfeld2 - Pointer auf Ziel-Spielfeld-Struktur.
  * Rückgabewert:        uint - Summe der Zellen bzw. Population.
  */
 uint next_generation(spielfeld *spielfeld1, spielfeld *spielfeld2){
@@ -344,7 +344,7 @@ uint next_generation(spielfeld *spielfeld1, spielfeld *spielfeld2){
 /*
  * Funktion:            Erstellt eine Spielfeld-Matrix und ordnet diese der Spielfeld-Struktur zu.
  *                      Dann wird das Spielfeld mit Nullen initialisiert.
- * Eingabe Parameter:   spielfeld *spielfeld - Poiter auf Spielfeld-Struktur.
+ * Eingabe Parameter:   spielfeld *spielfeld - Pointer auf Spielfeld-Struktur.
  * Rückgabewert:        Keiner.
  */
 void init_int_matrix(spielfeld *spielfeld){
@@ -387,8 +387,8 @@ bool benutzer_abfrage(){
  *                      wird die Matrix für den neuen Zyklus kopiert, der Zähler für den Zyklus
  *                      hochgesetzt und false zurück gegeben.
  * Eingabe Parameter:   metainfos *metaInfos  - Pointer für Struktur für Population und Zykluszähler.
- *                      spielfeld *spielfeld1 - Poiter auf Quell-Spielfeld-Struktur.
- *                      spielfeld *spielfeld2 - Poiter auf Ziel-Spielfeld-Struktur.
+ *                      spielfeld *spielfeld1 - Pointer auf Quell-Spielfeld-Struktur.
+ *                      spielfeld *spielfeld2 - Pointer auf Ziel-Spielfeld-Struktur.
  * Rückgabewert:        boolean - true bei erreichen eines stabilen Zustandes.
  */
 bool verarbeitung(metainfos *metaInfos, spielfeld *spielfeld1, spielfeld *spielfeld2){
@@ -422,23 +422,35 @@ void delete_int_matrix(int **m){
 int main() {
    cout << "Aufgabe 2.1 - The Game of Life." << endl;
 
+   // Deklarieren der Strukturen
    spielfeld spielfeld1;
    spielfeld spielfeld2;
    metainfos metainfos;
 
+   // Initialisieren der Metainformationen
    metainfos.init_metainfos();
+
+   // Dimensionen, Höhe und Breite, einlesen.
    dimensions_abfrage		   (&spielfeld1);
+
+   // Kopieren der Dimensionen auf die Zweite Spielfeld-Struktur
    kopiere_struktur_kopf	   (&spielfeld1, &spielfeld2);
+
+   // Initialisierung der Spielfeld-Matrizen
    init_int_matrix			   (&spielfeld1);
    init_int_matrix			   (&spielfeld2);
+
+   // Zufallsbelegung des ersten Spielfelds
    zufallsbelegung         	(&spielfeld1);
 
+   // Eigentlicher Spielablauf
 	while (benutzer_abfrage()) {
 	   if (verarbeitung(&metainfos, &spielfeld1, &spielfeld2)){
 	      break;
 	   }
 	}
 
+	// Speicherfreigabe
    delete_int_matrix(spielfeld1.matrix);
    delete_int_matrix(spielfeld2.matrix);
 
