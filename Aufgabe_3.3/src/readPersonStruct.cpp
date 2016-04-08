@@ -16,10 +16,6 @@
 using namespace std;
 
 //=============================================================================
-// Definitionen
-//=============================================================================
-
-//=============================================================================
 // Strukturen
 //=============================================================================
 
@@ -31,12 +27,16 @@ struct Mitarbeiter {
    unsigned int   durchwahl;
 };
 
-
-
 //=============================================================================
 // Funktionen
 //=============================================================================
 
+/*
+ * Funktion:            Öffnet die Personendaten-Datei, liest die Werte in eine Struktur
+ *                      und gibt diese formatiert aus.
+ * Eingabe Parameter:   Keiner.
+ * Rückgabewert:        Keiner.
+ */
 void readData( string ifs_file_name ){
    ifstream ifs;
    ifs.open(ifs_file_name.c_str());
@@ -48,6 +48,7 @@ void readData( string ifs_file_name ){
 
    Mitarbeiter buffer;
    int satz = 0;
+
    try{
       while(ifs >> buffer.identnummer >> buffer.nachname >> buffer.vorname >> buffer.abteilung >> buffer.durchwahl){
          satz++;

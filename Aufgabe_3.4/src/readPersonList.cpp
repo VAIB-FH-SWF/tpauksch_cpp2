@@ -38,6 +38,12 @@ struct mitarbeiter {
 // Funktionen
 //=============================================================================
 
+/*
+ * Funktion:            Öffnet die Personendaten-Datei, liest die Werte in eine Struktur
+ *                      und gibt diese formatiert aus.
+ * Eingabe Parameter:   Keiner.
+ * Rückgabewert:        Keiner.
+ */
 void readData( string ifs_file_name, mitarbeiter* cursor, mitarbeiter* ma){
    ifstream ifs;
    ifs.open(ifs_file_name.c_str());
@@ -49,6 +55,7 @@ void readData( string ifs_file_name, mitarbeiter* cursor, mitarbeiter* ma){
 
    cursor = ma;
 
+   // Einlesen der Werte, aktuellen Wert von curser->next auf nächstes Element setzen, curser auf nächste Struktur setzten.
    try{
       while(ifs >> cursor->identnummer >> cursor->nachname >> cursor->vorname >> cursor->abteilung >> cursor->durchwahl){
          cursor->next = new mitarbeiter;
@@ -62,6 +69,13 @@ void readData( string ifs_file_name, mitarbeiter* cursor, mitarbeiter* ma){
    }
 }
 
+/*
+ * Funktion:            Sucht angegeben Wert "durchwahl" in Liste und gibt Vor- und Nachname wieder.
+ * Eingabe Parameter:   unsigned int durchwahl
+ *                      Pointer mitarbeiter *ma
+ *                      Pointer mitarbeiter *curser
+ * Rückgabewert:        Pointer ergebnisZeiger - Zeiger auf Ergebnisfeld.
+ */
 mitarbeiter* findDurchwahl(unsigned int durchwahl, mitarbeiter *ma, mitarbeiter *curser){
    mitarbeiter *ergebnisZeiger = NULL;
    curser = ma;
@@ -76,6 +90,20 @@ mitarbeiter* findDurchwahl(unsigned int durchwahl, mitarbeiter *ma, mitarbeiter 
    return ergebnisZeiger;
 };
 
+/*
+ * Funktion:            Löschen der Listenelemente,
+ * Eingabe Parameter:   Pointer mitarbeiter *ma
+ *                      Pointer mitarbeiter *curser
+ * Rückgabewert:        Keiner.
+ */
+void listeAbbauen(mitarbeiter* ma, mitarbeiter *curser){
+   do {
+      curser = ma->next;
+      delete ma;
+      ma = curser->next;
+   } while ((ma->next != NULL));
+}
+
 //=============================================================================
 // Hauptprogramm
 //=============================================================================
@@ -88,9 +116,9 @@ int main() {
    mitarbeiter *cursor  = 0;
 
 
-   // Tests:
-   // Für Test "Leer":
-   //readData("personen_leer.dat", *&cursor, *&ma);
+//   //Tests:
+//   //Für Test "Leer":
+//   readData("personen_leer.dat", *&cursor, *&ma);
 
 //   // Für Test "Ein Element":
 //   readData("personen_ein_Element.dat", *&cursor, *&ma);
@@ -98,15 +126,13 @@ int main() {
 //   // Für Test "Erstes Element":
 //   readData("personen.dat", *&cursor, *&ma);
 //   ergebnis = findDurchwahl(4700, *&ma, *&cursor);
+//
+//   // Für Test "Letzte Element":
+//   readData("personen.dat", *&cursor, *&ma);
+//   ergebnis = findDurchwahl(4752, *&ma, *&cursor);
 
-   // Für Test "Letzte Element":
    readData("personen.dat", *&cursor, *&ma);
-   ergebnis = findDurchwahl(4752, *&ma, *&cursor);
-
-
-
-   //readData("personen.dat", *&cursor, *&ma);
-//   ergebnis = findDurchwahl(4731, *&ma, *&cursor);
+   ergebnis = findDurchwahl(4731, *&ma, *&cursor);
 
    if(ergebnis != NULL){
       cout << ergebnis->vorname << " " << ergebnis->nachname << endl;
@@ -114,5 +140,6 @@ int main() {
       cout << "Keine Ergebnisse gefunden." << endl;
    }
 
+   listeAbbauen(&liste, *&cursor);
    return 0;
 }

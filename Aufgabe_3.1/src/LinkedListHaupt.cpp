@@ -17,10 +17,6 @@
 using namespace std;
 
 //=============================================================================
-// Definitionen
-//=============================================================================
-
-//=============================================================================
 // Strukturen
 //=============================================================================
 
@@ -34,24 +30,50 @@ struct Element {
    void            setNext(Element *element);
 };
 
+/*
+ * Funktion:            Initialisiert die Strukturelemente.
+ * Eingabe Parameter:   Keiner.
+ * Rückgabewert:        Keiner.
+ */
 void Element::init_Element(){
    key  = 0;
    info = 0;
    next = NULL;
 }
 
+/*
+ * Funktion:            Setzt den key-Wert.
+ * Eingabe Parameter:   long key.
+ * Rückgabewert:        Keiner.
+ */
 void Element::setKey(long key){
    this->key = key;
 }
 
+/*
+ * Funktion:            Setzt den info-Wert.
+ * Eingabe Parameter:   long info.
+ * Rückgabewert:        Keiner.
+ */
 void Element::setInfo(long info){
    this->info = info;
 }
 
+/*
+ * Funktion:            Setzt die Adresse des nächsten Elements.
+ * Eingabe Parameter:   Pointer des Typs Element.
+ * Rückgabewert:        Keiner.
+ */
 void Element::setNext(Element *element){
    this->next = element;
 }
 
+/*
+ * Funktion:            Findet das Element mit dem zugehörigen Key und gibt
+ *                      einen Pointer auf die Adresse zurück.
+ * Eingabe Parameter:   Pointer des Typs Element.
+ * Rückgabewert:        Keiner.
+ */
 Element* findKey(long key, Element *listenanker, Element *curser){
    Element *ergebnisZeiger = NULL;
    curser = listenanker;
@@ -67,28 +89,29 @@ Element* findKey(long key, Element *listenanker, Element *curser){
 };
 
 //=============================================================================
-// Funktionen
-//=============================================================================
-
-//=============================================================================
 // Hauptprogramm
 //=============================================================================
 
 int main() {
+
+   // Initialisierung der Pointer.
    Element* listenanker = NULL;
    Element* cursor      = NULL;
    Element* ergebnis    = NULL;
 
+   // Initialisierung der Elemente.
    Element element1;
    Element element2;
    Element element3;
    Element element4;
 
+   // Initialisierung der Element-Werte.
    element1.init_Element();
    element2.init_Element();
    element3.init_Element();
    element4.init_Element();
 
+   // Setzen der Element-Werte.
    element1.setKey(1);
    element2.setKey(2);
    element3.setKey(3);
@@ -104,13 +127,17 @@ int main() {
    element3.setNext(&element4);
    element4.setNext(NULL);
 
-
+   // Zuordnung der ersten Adresse an den Listenanker.
    listenanker = &element1;
+
+   // Suche über die Verkettete Liste.
    ergebnis = findKey(3, *&listenanker, *&cursor);
 
+   // Ausgabe
    cout << "Listenelement gefunden: " << ergebnis << endl;
    cout << "key  = " << setw(10) << ergebnis->key << endl;
    cout << "info = " << setw(10) << ergebnis->info << endl;
    cout << "next = " << setw(10) << ergebnis->next << endl;
 
+   return 0;
 }

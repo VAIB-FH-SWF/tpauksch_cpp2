@@ -20,6 +20,8 @@ using namespace std;
 //=============================================================================
 
 int main() {
+
+   // Variablendefinition
    string         ifs_file_name = "personen.dat";
    string         identnummer;
    string         nachname;
@@ -36,6 +38,7 @@ int main() {
       exit(1);
    }
 
+   // Schleife zum einlesen und ausgeben der Dateiwerte.
    try{
       while(ifs >> identnummer >> nachname >> vorname >> abteilung >> durchwahl){
          satz++;
@@ -51,4 +54,6 @@ int main() {
    }catch(int e){
       cout << "\ERROR : Errorcode " << e << endl;
    }
+
+   return 0;
 }
