@@ -1,12 +1,11 @@
 //=============================================================================
-//             Dateiname:   LinkedList.cpp
+//             Dateiname:   readPersonStruct.cpp
 //                Author:   Tim Pauksch
 //      Praktikumsgruppe:   [V-10:30] - Is-VAI-B2A
-//      Erstellungsdatum:   23.03.2016
+//      Erstellungsdatum:   06.04.2016
 //          Beschreibung:   Programmierung mit C++ 2,
-//                          Aufgabe 3.1, Verkettete Listen.
-//                          Einfach verkettete Liste aus
-//                          statischen Elementen.
+//                          Aufgabe 3.3, Verkettete Listen.
+//                          Personenbeschreibung als Struktur.
 //              Compiler:   g++
 //=============================================================================
 #include <iostream>           // Für Textausgabe in Konsole
