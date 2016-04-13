@@ -1,20 +1,21 @@
 //=============================================================================
-//             Dateiname:   readPersonList.cpp
+//             Dateiname:   Mitarbeiter.cpp
 //                Author:   Tim Pauksch
 //      Praktikumsgruppe:   [V-10:30] - Is-VAI-B2A
-//      Erstellungsdatum:   06.04.2016
+//      Erstellungsdatum:   11.04.2016
 //          Beschreibung:   Programmierung mit C++ 2,
-//                          Aufgabe 3.4, Verkettete Listen.
-//                          Personenbeschreibung in einer Liste.
+//                          Aufgabe 3.4, Klasse Mitarbeiter.
+//                          Implementierung der Klasse Mitarbeiter.
 //              Compiler:   g++
 //=============================================================================
 #include <iostream>           // Für Textausgabe in Konsole
 #include <fstream>            // Für Dateiein- und ausgabe.
-#include <cstdlib>            // Für error(1).
 #include <iomanip>            // Für setw(3).
 
 using namespace std;
 
+// Struktur die die Kontaktdaten hält. Die Mitarbeiter-Objekte speichern in diesen Strukturen
+// die Personendaten und halten als einzige die Speicher-Referenz.
 struct Person {
    string identnummer;
    string nachname;
@@ -23,27 +24,36 @@ struct Person {
    string durchwahl;
 };
 
+// Klassendefinition der Klasse Mitarbeiter.
 class Mitarbeiter{
 
+   // Liste öffentlicher Elemente der Klasse.
    public:
    //==============LIFECYCLE=============================================================
+      // Überladener Konstruktor mit Ersatzwerten.
       Mitarbeiter(string identnummer = "-",
                   string nachname    = "-",
                   string vorname     = "-",
                   string abteilung   = "-",
                   string durchwahl   = "-");
+      // Überladener Konstruktor der eine Referenz einer anderen Klasse zur Initialisierung
+      // der Werte verwendet.
       Mitarbeiter(const Mitarbeiter &other);
+      // Destruktor der Klasse.
      ~Mitarbeiter();
 
    //==============ACCESSORS=============================================================
+      // Definition der Getter-Methoden für den Zugang der Struktur-Variablen.
       string get_identnummer   () const;
       string get_nachname      () const;
       string get_vorname       () const;
       string get_abteilung     () const;
       string get_durchwahl     () const;
+      // Methode zur Ausgabe der Struktur-Variablen.
       void   print             ();
 
    //==============ACCESSORS=============================================================
+      // Definition der Setter-Methoden für das Hinterlegen der Struktur-Variablen.
       void set_identnummer   (string value);
       void set_nachname      (string value);
       void set_vorname       (string value);
@@ -51,6 +61,8 @@ class Mitarbeiter{
       void set_durchwahl     (string value);
 
    //==============OPERATORS=============================================================
+      // Definition der Methode zur Überlagerung des Gleich-Operators ("="). Nimmt
+      // die Referenz der Ziel-Klasse auf.
       Mitarbeiter& operator = ( const Mitarbeiter &other);
 
    private:
