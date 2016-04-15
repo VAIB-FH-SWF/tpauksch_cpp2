@@ -10,7 +10,11 @@
 //=============================================================================
 #include <iostream>           // Für Textausgabe in Konsole
 #include <fstream>            // Für Dateiein- und ausgabe.
+#include <cstdlib>            // Für error(1).
 #include <iomanip>            // Für setw(3).
+
+
+const unsigned int N = 100;
 
 using namespace std;
 
@@ -112,6 +116,7 @@ string Mitarbeiter::get_durchwahl   () const {
    return p->durchwahl;
 }
 
+// BITTE ÜBERARBEITEN. Laut Aufgabe 4.2 soll die Ausgabe anders aussehen.
 void Mitarbeiter::print(){
    cout  << left
          << setw(9)  << get_identnummer()
@@ -156,26 +161,51 @@ Mitarbeiter& Mitarbeiter::operator = (const Mitarbeiter &other){
    return *this;
 }
 
+void checkFileStatus(const string& ifs_file_name, ifstream& ifs) {
+   if (!ifs.is_open()) {
+      cerr << "\nERROR : Failed to open input file: " << ifs_file_name << endl;
+      exit(1);
+   }
+}
+
 int main() {
-   Mitarbeiter m1;
-   m1.set_identnummer   ("10002220");
-   m1.set_nachname      ("JAYALATH");
-   m1.set_vorname       ("THILANAKA");
-   m1.set_abteilung     ("QC18");
-   m1.set_durchwahl     ("4701");
-   m1.print();
+   string ifs_file_name = "personen.dat";
+   ifstream ifs;
+   Mitarbeiter mitarbeiterListe[N];
 
-   Mitarbeiter m2("10001222", "DOLBEL", "DAVID", "QC18", "4700");
-   m2.print();
+   ifs.open(ifs_file_name.c_str());
+   checkFileStatus(ifs_file_name, ifs);
 
-   Mitarbeiter m3(m1);
+   string identnummer = "";
+   string nachname = "";
+   string vorname = "";
+   string abteilung = "";
+   string durchwahl = "";
 
-   m1.print();
-   m3.print();
+   int datensatz = 0;
 
-   m1 = m2;
 
-   m1.print();
+   // Einlesen der Werte, aktuellen Wert von curser->next auf nächstes Element setzen, curser auf nächste Struktur setzten.
+   try{
+      for (int i = 0; i < 100; i++) {
+         if (ifs >> identnummer >> nachname >> vorname >> abteilung >> durchwahl){
+            mitarbeiterListe[i].set_identnummer(identnummer);
+            mitarbeiterListe[i].set_nachname(nachname);
+            mitarbeiterListe[i].set_vorname(vorname);
+            mitarbeiterListe[i].set_abteilung(abteilung);
+            mitarbeiterListe[i].set_durchwahl(durchwahl);
+
+            datensatz++;
+         }
+      }
+   }catch(int e){
+      cout << "\ERROR : Errorcode " << e << endl;
+   }
+   ifs.close();
+
+   for (int i = 0; i< datensatz; i++){
+      mitarbeiterListe[i].print();
+   }
 
    return 0;
 }
