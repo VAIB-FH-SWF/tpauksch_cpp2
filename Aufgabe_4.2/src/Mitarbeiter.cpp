@@ -162,18 +162,12 @@ string Mitarbeiter::get_durchwahl   () const {
  * Ausgabe:    leer
  */
 void Mitarbeiter::print(){
-//   cout  << left
-//         << setw(9)  << get_identnummer() << ", "
-//         << setw(20) << get_nachname() << ", "
-//         << setw(20) << get_vorname() << ", "
-//         << setw(5)  << get_abteilung() << ", "
-//         << setw(5)  << get_durchwahl() << endl;
    cout  << left
-         << get_identnummer() << ", "
-         << get_nachname() << ", "
-         << get_vorname() << ", "
-         << get_abteilung() << ", "
-         << get_durchwahl() << endl;
+         << get_identnummer()    << ", "
+         << get_nachname()       << ", "
+         << get_vorname()        << ", "
+         << get_abteilung()      << ", "
+         << get_durchwahl()      << endl;
 }
 
 /*
