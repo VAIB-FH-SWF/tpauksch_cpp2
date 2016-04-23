@@ -70,6 +70,15 @@ class Mitarbeiter{
       Person   *p;
 };
 
+/*
+ * Funktion:   Init der Werte mit Konstruktor
+ * Eingabe:    string identnummer,
+ *             string nachname,
+ *             string vorname
+ *             string abteilung,
+ *             string durchwahl
+ * Ausgabe:    leer
+ */
 Mitarbeiter::Mitarbeiter(string identnummer, string nachname, string vorname, string abteilung, string durchwahl){
    p = new Person;
    set_identnummer(identnummer);
@@ -79,6 +88,11 @@ Mitarbeiter::Mitarbeiter(string identnummer, string nachname, string vorname, st
    set_durchwahl(durchwahl);
 }
 
+/*
+ * Funktion:   Rückgabe der Identnummer
+ * Eingabe:    Mitarbeiter &other - Pointer
+ * Ausgabe:    leer
+ */
 Mitarbeiter::Mitarbeiter(const Mitarbeiter &other){
    p = new Person;
    p->identnummer = other.p->identnummer;
@@ -88,30 +102,61 @@ Mitarbeiter::Mitarbeiter(const Mitarbeiter &other){
    p->durchwahl   = other.p->durchwahl;
 }
 
+//Destruktor
 Mitarbeiter::~Mitarbeiter(){
    delete p;
 }
 
+/*
+ * Funktion:   Rückgabe der Identnummer
+ * Eingabe:    leer
+ * Ausgabe:    String identnummer
+ */
 string Mitarbeiter::get_identnummer () const {
    return p->identnummer;
 }
 
+/*
+ * Funktion:   Rückgabe des Nachnamen
+ * Eingabe:    leer
+ * Ausgabe:    String nachname
+ */
 string Mitarbeiter::get_nachname    () const {
    return p->nachname;
 }
 
+/*
+ * Funktion:   Rückgabe des Vornamen
+ * Eingabe:    leer
+ * Ausgabe:    String vorname
+ */
 string Mitarbeiter::get_vorname     () const {
    return p->vorname;
 }
 
+/*
+ * Funktion:   Rückgabe der Abteilung
+ * Eingabe:    leer
+ * Ausgabe:    String abteilung
+ */
 string Mitarbeiter::get_abteilung   () const {
    return p->abteilung;
 }
 
+/*
+ * Funktion:   Rückgabe der Durchwahl
+ * Eingabe:    leer
+ * Ausgabe:    String durchwahl
+ */
 string Mitarbeiter::get_durchwahl   () const {
    return p->durchwahl;
 }
 
+/*
+ * Funktion:   Drucken der von den Getter-Methoden erhaltenen Werte
+ * Eingabe:    leer
+ * Ausgabe:    leer
+ */
 void Mitarbeiter::print(){
    cout  << left
          << setw(9)  << get_identnummer()
@@ -121,26 +166,56 @@ void Mitarbeiter::print(){
          << setw(5)  << get_durchwahl() << endl;
 }
 
+/*
+ * Funktion:   Übernahme der Identnummer in Variable
+ * Eingabe:    string identnummer
+ * Ausgabe:    leer
+ */
 void Mitarbeiter::set_identnummer(string value){
    p->identnummer = value;
 }
 
+/*
+ * Funktion:   Übernahme des Nachnamen in Variable
+ * Eingabe:    string nachname
+ * Ausgabe:    leer
+ */
 void Mitarbeiter::set_nachname   (string value){
    p->nachname    = value;
 }
 
+/*
+ * Funktion:   Übernahme des Vornamen in Variable
+ * Eingabe:    string vorname
+ * Ausgabe:    leer
+ */
 void Mitarbeiter::set_vorname    (string value){
    p->vorname     = value;
 }
 
+/*
+ * Funktion:   Übernahme der Abteilung in Variable
+ * Eingabe:    string abteilung
+ * Ausgabe:    leer
+ */
 void Mitarbeiter::set_abteilung  (string value){
    p->abteilung   = value;
 }
 
+/*
+ * Funktion:   Übernahme der Durchwahl in Variable
+ * Eingabe:    string durchwahl
+ * Ausgabe:    leer
+ */
 void Mitarbeiter::set_durchwahl  (string value){
    p->durchwahl   = value;
 }
 
+/*
+ * Funktion:   Überladung des Gleich-Operators
+ * Eingabe:    Mitarbeiter &other
+ * Ausgabe:    Pointer auf Mitarbeiter
+ */
 Mitarbeiter& Mitarbeiter::operator = (const Mitarbeiter &other){
    if (this != &other){
          Person *save = p;
