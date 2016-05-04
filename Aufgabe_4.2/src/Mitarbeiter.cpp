@@ -28,20 +28,27 @@ struct Person {
    string durchwahl;
 };
 
+
 // Klassendefinition der Klasse Mitarbeiter.
 class Mitarbeiter{
 
    // Liste öffentlicher Elemente der Klasse.
    public:
    //==============LIFECYCLE=============================================================
-      // Überladener Konstruktor mit Ersatzwerten.
+      /*
+       * Überladener Konstruktor mit Ersatzwerten. Wenn ein Objekt des Typs Mitarbeiter erstellt wird
+       * wie z.B. Mitarbeiter m1 = new Mitarbeiter(); werden trotz leerer Parameterliste die Standardwerte
+       * "-" als Attribute verwendet. Im Script wird an dieser Stelle von "Ersatzwert" gesprochen.
+       */
       Mitarbeiter(string identnummer = "-",
                   string nachname    = "-",
                   string vorname     = "-",
                   string abteilung   = "-",
                   string durchwahl   = "-");
-      // Überladener Konstruktor der eine Referenz einer anderen Klasse zur Initialisierung
-      // der Werte verwendet.
+      /*
+       * Überladener Konstruktor der eine Referenz einer anderen Klasse zur Initialisierung
+       * der Werte verwendet.
+       */
       Mitarbeiter(const Mitarbeiter &other);
       // Destruktor der Klasse.
      ~Mitarbeiter();
@@ -277,7 +284,7 @@ int main() {
    }
    ifs.close();
 
-   for (int i = 0; i< datensatz; i++){
+   for (int i = 0; i < datensatz; i++){
       cout << i << " : ";
       mitarbeiterListe[i].print();
    }
