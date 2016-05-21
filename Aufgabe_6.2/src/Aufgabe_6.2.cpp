@@ -4,13 +4,14 @@
 //      Praktikumsgruppe:   [V-10:30] - Is-VAI-B2A
 //      Erstellungsdatum:   09.05.2016
 //          Beschreibung:   Programmierung mit C++ 2,
-//                          Aufgabe 6.1, Überladen von Operatoren
-//                          Implementierung der Klasse Vek3.
+//                          Aufgabe 6.2, Überladen von Operatoren
+//                          Schnittpunkt der Schiffswege.
 //              Compiler:   g++
 //=============================================================================
 
 #include <iostream>
 #include <math.h>
+#include <assert.h>
 #include "Vec3.h"
 
 using namespace std;
@@ -291,9 +292,43 @@ Vek3 operator %(const Vek3 &vektor_1, const Vek3 &vektor_2) {
 }
 
 /**
- * Funktion:   Überladener Operator für den Ausgabestream um Vek3-Objekte formatiert auszugeben
- * Eingabe:    ostream & os, const Vek3 & obj
- * Ausgabe:    ostream os
+ * Funktion:   Lösung eines vektoriell dargestellten linearen Gleichungssystems nach der Sarrusschen Regel
+ * Eingabe:    Vek3 s1, Vek3 s2, Vek3 s3, Vek3 r
+ * Ausgabe:    Vek3 result - Lösungsvektor
+ */
+Vek3 lingl3 ( Vek3 s1, Vek3 s2, Vek3 s3, Vek3 r) {
+   double D_0 = (s1 % s2) * s3;
+   double D_0_Betrag = (D_0 * D_0) / D_0;
+
+   // Prüfung auf Nenner = 0 bzw. Kollinearität (Ja, das Wort gibt es. Ich habe nachgesehen).
+   assert (D_0_Betrag != 0);
+
+   double D_1 = (r  % s2) * s3;
+   double D_2 = (s1 % r ) * s3;
+   double D_3 = (s1 % s2) * r ;
+
+   double x1 = D_1 / D_0;
+   double x2 = D_2 / D_0;
+   double x3 = D_3 / D_0;
+
+   Vek3 result(x1, x2, x3);
+   return result;
+}
+
+/**
+ * Funktion:   Ermittlung des Schnittpunkts für Funktion lingl3 (Auflösung der Gradengleichung)
+ * Eingabe:    Vek3 stuetzvektor, double lambda, Vek3 richtungsvektor
+ * Ausgabe:    Vek3 result - Schnittpunkt
+ */
+Vek3 schnittpunkt_lingl3(Vek3 stuetzvektor, double lambda, Vek3 richtungsvektor) {
+   Vek3 result = stuetzvektor + (lambda * richtungsvektor);
+   return result;
+}
+
+/**
+ * Funktion:	Überladener Operator für den Ausgabestream um Vek3-Objekte formatiert auszugeben
+ * Eingabe: 	ostream & os, const Vek3 & obj
+ * Ausgabe:		ostream os
  */
 ostream& operator <<(ostream & os, const Vek3 & obj) {
    os << "{ " << obj.get_x() << ", " << obj.get_y() << ", " << obj.get_z() << " }";
@@ -301,27 +336,42 @@ ostream& operator <<(ostream & os, const Vek3 & obj) {
 }
 
 int main(){
-   Vek3 a1(1.0, 4.0, 9.0);
-   cout << a1 << endl;
+   cout << "Aufgabe 6.2, Überladen von Operatoren Schnittpunkt der Schiffswege." << endl;
+   cout << endl;
 
-   Vek3 a2(1.0, 1.0, 1.0);
-   cout << a2 << endl;
+   // Stützvektor der Ebenengleichung_1
+   Vek3 p1(1,  1, 0);
 
-   cout << a1.laenge() << endl;
-   cout << a1 << endl;
+   // Spaltenvektoren der Matrix für Lösung des Gleichungssystems nach Sarrusschen Regel
+   Vek3 s1(2,  2, 0);
+   Vek3 s2(1, -3, 0);
+   Vek3 s3(0,  0, 1);
 
-   a1 += a2;
-   cout << a1 << endl;
-   cout << a2 << endl;
+   // Rechte Seite des Gleichungssystems
+   Vek3 r (7, -1, 0);
 
-   a2 *= 13.0;
-   cout << a2 << endl;
+   // Ermittlung des Lösungsvektors
+   Vek3 loesungsvektor = lingl3 ( s1, s2, s3, r );
 
-   a2 /= 13.0;
-   cout << a2 << endl;
+   // Ermittlung des Schnittpunkts
+   Vek3 schittpunkt    = schnittpunkt_lingl3 (p1, loesungsvektor.get_x(), s1);
 
-   Vek3 a3 = -a2;
-   cout << a3 << endl;
+   // Ergebnisausgaben
+   cout << "Lösungsvektor " << loesungsvektor << endl;
+   cout << "Schittpunkt "   << schittpunkt    << endl;
+
+   cout << "Die Dauer für das Erreichen des Schnittpunktes für Schiff_1 beträgt: " << loesungsvektor.get_x() << "h" << endl;
+   cout << "Die Dauer für das Erreichen des Schnittpunktes für Schiff_2 beträgt: " << loesungsvektor.get_y() << "h" << endl;
+
+   /*
+    * Zu Aufgabe 6.2:
+    * Der bloße Schnittpunkt sagt nichts über das gleichzeitige Erreichen dessen aus. Entscheidend sind die Längen der Vektoren,
+    * die etwas über die Geschwindigkeit der Schiffe aussagen. Ebenso wie Lambda_1 und Lambda_2 die etwas über die Dauer des
+    * Erreichens aussagen. Diese müssten schon gleich sein damit beide auch gleichzeitig ankommen.
+    */
+
+   cout << endl;
+   cout << "Programmende." << endl;
 
    return 0;
 }
