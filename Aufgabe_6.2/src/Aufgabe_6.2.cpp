@@ -8,7 +8,6 @@
 //                          Schnittpunkt der Schiffswege.
 //              Compiler:   g++
 //=============================================================================
-
 #include <iostream>
 #include <math.h>
 #include <assert.h>
@@ -314,6 +313,8 @@ Vek3 lingl3 ( Vek3 s1, Vek3 s2, Vek3 s3, Vek3 r) {
    Vek3 result(x1, x2, x3);
    return result;
 }
+
+
 
 /**
  * Funktion:   Ermittlung des Schnittpunkts für Funktion lingl3 (Auflösung der Gradengleichung)
